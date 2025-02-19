@@ -1,7 +1,7 @@
 "use client";
 
 import { useState } from "react";
-import { useAccount, useReadContract, useWriteContract } from "wagmi";
+import { useAccount, useWriteContract } from "wagmi";
 import { sepolia } from "viem/chains";
 import { Loader2 } from "lucide-react";
 import { readContract } from "@wagmi/core";
@@ -28,17 +28,9 @@ const NFTForm = ({
 }: {
   handleSuccess: (data: INFT) => void;
 }) => {
-  const { data } = useReadContract({
-    chainId: sepolia.id,
-    abi,
-    address: CONTRACT_ADDRESS,
-    functionName: "checkId",
-    args: [BigInt(73423)],
-  });
-  console.log(data);
   const { address } = useAccount();
 
-  const { writeContractAsync, isError, isSuccess } = useWriteContract();
+  const { writeContractAsync } = useWriteContract();
 
   const [formData, setFormData] = useState({
     name: "",

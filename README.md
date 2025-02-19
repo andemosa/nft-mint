@@ -23,7 +23,6 @@ The project also includes a Swagger documentation.
 
 The task is to seamlessly integrate the provided [figma design](https://www.figma.com/design/fkWRj8xpQv7Ma3SN5eTQHt/NFT-Minting-Page?node-id=0-1&t=AIHR6C8SEpMVbUny-1), into a fully functional web application, demonstrating expertise in full stack web development and web3 integration.
 
-
 ### Screenshot
 
 ![Home Page](./screenshots/home.png)
@@ -36,16 +35,22 @@ The task is to seamlessly integrate the provided [figma design](https://www.figm
 
 ![Success](./screenshots/success.png)
 
-
 ### Links
 
-- Live Site URL: ()
-- Live API URL: ()
+- Live Site URL: (https://nft-mint-andemosa.vercel.app/)
+- Live API URL: (https://nft-mint-p40x.onrender.com)
 
 ### Video Demo
 
-- Frontend Demo - ()
+- Walkthrough video - (https://www.loom.com/share/b7053535e75645beb4add7a92901f566?sid=11304ae5-10dd-440d-94c8-2e50bb4f50c3)
 
+- Backend Demo 1 - (https://www.loom.com/share/d46921beb2ba48b8ac32baed0cc2eb86?sid=283903bc-31a8-4b2a-92c3-f0b97bd1a94b)
+
+- Backend Demo 2 - (https://www.loom.com/share/d17d5173b7734cd9aec67596c43c9700?sid=4c67fd63-c70a-43e3-910f-8b73f08bb5ce)
+
+- Frontend Demo 1 - (https://www.loom.com/share/dffbce0f6bce41adbe9b4c93f4b6edb9?sid=53f1ae73-fa40-45d4-be39-5f19a08e16ba)
+
+- Frontend Demo 2 - (https://www.loom.com/share/8ffa00adf10140ee84c5f66c2104984d?sid=ac73ef3d-a9e3-4f4b-aea6-0218868861e5)
 
 ### NFT Endpoints
 
@@ -97,7 +102,6 @@ cd nft-mint
    - Sign up for an account at [MongoDB Atlas](https://www.mongodb.com/cloud/atlas).
    - Create a new cluster and follow the instructions to set up a new database.
    - Once set up, obtain your MongoDB connection string and add it to the `MONGO_URI` variable in your `.env` files.
-
 
 ### Frontend Configuration
 
