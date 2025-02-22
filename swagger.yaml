@@ -1,211 +1,109 @@
 openapi: 3.0.0
 info:
-  title: Node.js Rest API  - OpenAPI 3.0
+  title: Cytric NFT Rest API  - OpenAPI 3.0
   version: 1.0.0
-  description: Task Manager Application
+  description: Cytric NFT Backend
   contact:
     name: Anderson Osayerie
     email: osayerieanderson@gmail.com
-    url: https://andemosa.vercel.app/
+    url: https://andemosa.tech
 paths:
-  /api/auth/register:
+  /api/nfts:
     post:
       tags:
-        - Auth
-      summary: Register a user
-      description: This endpoint is used when creating a user.
+        - NFT
+      summary: store a new NFT
+      description: This endpoint is used when a user wants to store a new NFT.
       requestBody:
         required: true
         content:
           application/json:
             schema:
-              $ref: "#/components/schemas/RegisterSchema"
+              $ref: "#/components/schemas/StoreNFTSchema"
       responses:
         "201":
-          description: User created
+          description: NFT stored successfully
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/RegisterResponse"
-        "400":
-          description: Bad request
-        "409":
-          description: Conflict
-  /api/auth/login:
-    post:
-      tags:
-        - Auth
-      summary: Login a user
-      description: This endpoint is used to login a user.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/LoginSchema"
-      responses:
-        "200":
-          description: User logged in
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/LoginResponse"
-        "401":
-          description: Unauthorized
-  /api/tasks:
-    post:
-      tags:
-        - Task
-      summary: Create a task
-      description: This endpoint is used when a user wants to create a task.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateTaskSchema"
-      responses:
-        "201":
-          description: User created
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/CreateTaskResponse"
+                $ref: "#/components/schemas/StoreNFTResponse"
         "400":
           description: Bad request
         "409":
           description: Conflict
     get:
       tags:
-        - Task
-      summary: Return a list of tasks
-      description: This endpoint is used to return a list of tasks. It accepts query
-        filters.
+        - NFT
+      summary: Return a list of nfts
+      description: This endpoint is used to return a list of nfts owned by a wallet
+        address. It accepts query filters.
       parameters:
         - in: query
-          name: date
+          name: address
           schema:
             type: string
-            default: 2024-03-25
-          description: The date for which asks should be gotten
-        - in: query
-          name: limit
-          schema:
-            type: number
-            default: 10
-          description: The number of tasks shown per page
-        - in: query
-          name: page
-          schema:
-            type: number
-            default: 1
-          description: The current page
+            default: null
+          description: The wallet address for which nfts should be gotten
+          required: true
       responses:
         "200":
-          description: Returns a list of tasks for the user
+          description: Returns a list of nfts for the wallet address
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/GetTasksResponse"
+                $ref: "#/components/schemas/GetNFTsResponse"
         "400":
           description: Bad request
-        "409":
-          description: Conflict
-  "/api/tasks/{taskId}":
-    patch:
+  "/api/nfts/{id}":
+    get:
       tags:
-        - Task
-      summary: Update a task
-      description: This endpoint is used when a user wants to update a task.
+        - NFT
+      summary: Gets the data for an NFT
+      description: This endpoint is used to retrieve data stored under an nft id.
       parameters:
-        - name: taskId
+        - name: id
           in: path
-          description: The id of the task
+          description: The id of the nft
           required: true
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/CreateTaskSchema"
       responses:
-        "201":
+        "200":
           description: Success
           content:
             application/json:
               schema:
-                $ref: "#/components/schemas/UpdateTaskResponse"
-        "403":
-          description: Forbidden
-        "404":
-          description: Task not found
-    delete:
-      tags:
-        - Task
-      summary: Delete a task
-      description: This endpoint is used when a user wants to delete a task.
-      parameters:
-        - name: taskId
-          in: path
-          description: The id of the task
-          required: true
-      responses:
-        "201":
-          description: Success
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/DeleteTaskResponse"
-        "403":
-          description: Forbidden
-        "404":
-          description: Task not found
-  /api/users/me:
-    patch:
-      tags:
-        - User
-      summary: Edit user info
-      description: This endpoint is used to edit user info. Name, password and avatar
-        can be changed using this endpoint.
-      requestBody:
-        required: true
-        content:
-          application/json:
-            schema:
-              $ref: "#/components/schemas/UpdateUserSchema"
-      responses:
-        "200":
-          description: User info updated
-          content:
-            application/json:
-              schema:
-                $ref: "#/components/schemas/UpdateUserResponse"
+                $ref: "#/components/schemas/GetNFTDataResponse"
         "400":
           description: Bad request
-        "409":
-          description: Conflict
+        "404":
+          description: NFT not found
 components:
   schemas:
-    CreateTaskSchema:
+    StoreNFTSchema:
       type: object
+      additionalProperties: false
       required:
-        - title
-        - date
-        - startTime
+        - name
+        - description
+        - address
+        - id
+        - logo
       properties:
-        title:
+        name:
           type: string
-          default: Create Wireframe
-        date:
+          default: null
+        description:
           type: string
-          default: 2024-03-25
-        startTime:
+          default: null
+        address:
           type: string
-          default: 10:30
-        endTime:
+          default: null
+        id:
+          type: number
+          default: null
+        logo:
           type: string
-          default: 11:30
-    CreateTaskResponse:
+          default: null
+    StoreNFTResponse:
       type: object
       properties:
         _id:
@@ -214,206 +112,57 @@ components:
           type: string
         updatedAt:
           type: string
-        title:
-          type: string
-        date:
-          type: string
-        startTime:
-          type: string
-        endTime:
-          type: string
-        completed:
-          type: boolean
-        startTimeISO:
-          type: string
-        endTimeISO:
-          type: string
-        user:
-          type: string
-    GetTasksResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        page:
-          type: string
-        limit:
-          type: string
-        total:
-          type: string
-        tasks:
-          type: array
-          items:
-            type: object
-            properties:
-              _id:
-                type: string
-              createdAt:
-                type: string
-              updatedAt:
-                type: string
-              title:
-                type: string
-              date:
-                type: string
-              startTime:
-                type: string
-              endTime:
-                type: string
-              completed:
-                type: boolean
-              startTimeISO:
-                type: string
-              endTimeISO:
-                type: string
-              user:
-                type: string
-    UpdateTaskResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        task:
-          type: object
-          properties:
-            _id:
-              type: string
-            createdAt:
-              type: string
-            updatedAt:
-              type: string
-            title:
-              type: string
-            date:
-              type: string
-            startTime:
-              type: string
-            endTime:
-              type: string
-            startTimeISO:
-              type: string
-            endTimeISO:
-              type: string
-            user:
-              type: string
-            completed:
-              type: boolean
-    DeleteTaskResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        message:
-          type: string
-          default: Task has been deleted!
-    RegisterSchema:
-      type: object
-      additionalProperties: false
-      required:
-        - email
-        - name
-        - password
-      properties:
-        email:
-          type: string
-          default: jane.doe@example.com
         name:
           type: string
-          default: Jane Doe
-        password:
+        description:
           type: string
-          default: stringPassword123
-    RegisterResponse:
+        logo:
+          type: string
+        address:
+          type: string
+        id:
+          type: number
+    GetNFTsResponse:
+      type: array
+      items:
+        type: object
+        properties:
+          _id:
+            type: string
+          createdAt:
+            type: string
+          updatedAt:
+            type: string
+          name:
+            type: string
+          description:
+            type: string
+          logo:
+            type: string
+          address:
+            type: string
+          id:
+            type: number
+    GetNFTDataResponse:
       type: object
       properties:
-        message:
+        _id:
           type: string
-        success:
-          type: boolean
-        user:
-          type: object
-          properties:
-            email:
-              type: string
-            name:
-              type: string
-            _id:
-              type: string
-            createdAt:
-              type: string
-            updatedAt:
-              type: string
-            token:
-              type: string
-    LoginSchema:
-      type: object
-      required:
-        - email
-        - password
-      additionalProperties: false
-      properties:
-        email:
+        createdAt:
           type: string
-          default: jane.doe@example.com
-        password:
+        updatedAt:
           type: string
-          default: stringPassword123
-    LoginResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        user:
-          type: object
-          properties:
-            email:
-              type: string
-            name:
-              type: string
-            _id:
-              type: string
-            createdAt:
-              type: string
-            updatedAt:
-              type: string
-            token:
-              type: string
-    UpdateUserSchema:
-      type: object
-      additionalProperties: false
-      properties:
-        email:
+        name:
           type: string
-          default: jane.doe@example.com
-        password:
+        description:
           type: string
-          default: stringPassword123
-        avatar:
+        logo:
           type: string
-          default: http://res.cloudinary.com/test/image/upload/qtltmsivf8n1bh9.jpg
-    UpdateUserResponse:
-      type: object
-      properties:
-        success:
-          type: boolean
-        user:
-          type: object
-          properties:
-            email:
-              type: string
-            name:
-              type: string
-            _id:
-              type: string
-            createdAt:
-              type: string
-            updatedAt:
-              type: string
+        address:
+          type: string
+        id:
+          type: number
 tags:
-  - name: Auth
-    description: The Auth API provides endpoints for registering and logging in a user.
-  - name: Task
-    description: The Task API provides endpoints for managing tasks, including
-      creating, updating, retrieving, and deleting user's tasks.
-  - name: User
-    description: The User API provides an endpoint for updating user info.
+  - name: NFT
+    description: The NFT API provides endpoints for managing NFTs, including
+      storing, retrieving wallet address's NFTs.
